@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: redis-master
+    labels:
+        app: redis
+spec:
+    selector:
+        matchLabels:
+            app: redis
+            role: master
+            tier: backend
+    replicas: 1
+    template:
+        metadata:
+            labels:
+                app: redis
+                role: master
+                tier: backend
+        spec:
+            containers:
+                - name: master
+                  image: k8s.gcr.io/redis:e2e
+                  resources:
+                    requests:
+                        cpu: 100m #1CPU = 1000 milicores 100m=1/10 CPU
+                        memory: 100Mi #1 mebibyte (MiB) = 1048.576 bytes
+                                      #1 megabyte (MB) = 1 000 000 bytes
+                  ports:
+                  - containerPort: 6379  
